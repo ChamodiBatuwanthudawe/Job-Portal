@@ -14,4 +14,13 @@ class Job extends Model
         'keywords','experience','company_name','company_location','company_website',
         'status','isFeatured'
         ];
+ 
+
+        public function jobType(){
+            return $this->belongsTo(JobType::class);
+        }
+
+        public function category(){
+            return $this->belongsTo(Category::class);
+        }
 }
