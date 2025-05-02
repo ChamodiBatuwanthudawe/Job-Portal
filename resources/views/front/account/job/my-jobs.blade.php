@@ -29,7 +29,6 @@
                             <div style="margin-top: -10px;">
                                 <a href="{{ route('account.createJob') }}" class="btn btn-primary">Post a Job</a>
                             </div>
-                            
                         </div>
                         <div class="table-responsive">
                             <table class="table ">
@@ -58,16 +57,15 @@
                                             @else
                                             <div class="job-status text-capitalize">Block</div>
                                             @endif
-                                           
                                         </td>
                                         <td>
                                             <div class="action-dots float-end">
-                                                <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <button href="#" class="" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                                </a>
+                                                </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li><a class="dropdown-item" href="job-detail.html"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
+                                                    <li><a class="dropdown-item" href="{{ route('account.editJob', $job->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
                                                     <li><a class="dropdown-item" href="#"><i class="fa fa-trash" aria-hidden="true"></i> Remove</a></li>
                                                 </ul>
                                             </div>
@@ -75,15 +73,16 @@
                                     </tr>
                                     @endforeach
                                     @endif
-
-                                   
-                                  
                                 </tbody>
-                                
                             </table>
                         </div>
-                        <div>
-                            {{ $jobs->links() }}
+                        {{-- Enhanced Pagination --}}
+                        <div class="mt-4">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    {{ $jobs->onEachSide(1)->links('pagination::bootstrap-4') }}
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>             
@@ -92,9 +91,49 @@
     </div>
 </section>
 
-
 @endsection
 
 @section('customJs')
+@endsection
+@section('customJs')
+<style>
+    /* Custom Pagination Styles */
+    .pagination {
+        margin: 20px 0;
+    }
 
+    .pagination li.page-item {
+        margin: 0 3px;
+    }
+
+    .pagination .page-link {
+        color: #4a5568;
+        border: 1px solid #e2e8f0;
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        font-size: 14px;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #f8fafc;
+        border-color: #cbd5e0;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #3b82f6;
+        border-color: #3b82f6;
+        color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #cbd5e0;
+        background-color: white;
+        border-color: #e2e8f0;
+    }
+
+    .pagination .page-link:focus {
+        box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+    }
+</style>
 @endsection
