@@ -304,8 +304,28 @@ public function updateJob(Request $request, $id)
     }
 }
 
-public function deleteJob(Request $request){
+public function deleteJob($jobId)
+{
+    $job = Job::where([
+        'user_id' => Auth::user()->id,
+        'id' => $jobId
+    ])->first();
 
+    if ($job == null) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Either job deleted or not found.'
+        ]);
+    }
+
+    $job->delete();
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Job deleted successfully.'
+    ]);
 }
 
 }
+
+

@@ -66,7 +66,12 @@
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li><a class="dropdown-item" href="job-detail.html"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
                                                     <li><a class="dropdown-item" href="{{ route('account.editJob', $job->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="fa fa-trash" aria-hidden="true"></i> Remove</a></li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" onclick="deleteJob({{ $job->id }})">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                                        </a>
+                                                    </li>
+                                                    
                                                 </ul>
                                             </div>
                                         </td>
@@ -93,47 +98,38 @@
 
 @endsection
 
+
 @section('customJs')
+<script type="text/javascript">
+    function deleteJob(jobId) {
+        if (confirm("Are you sure you want to delete?")) {
+            $.ajax({
+                url: '/account/delete-job/' + jobId,
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.status) {
+                        // Simply reload the page - server will show the message
+                        window.location.reload();
+                    } else {
+                        alert("Failed to delete: " + (response.message || ""));
+                    }
+                },
+                error: function(xhr) {
+                    alert("Error: " + xhr.responseText);
+                }
+            });
+        }
+    }
+</script>
 @endsection
-@section('customJs')
-<style>
-    /* Custom Pagination Styles */
-    .pagination {
-        margin: 20px 0;
-    }
 
-    .pagination li.page-item {
-        margin: 0 3px;
-    }
 
-    .pagination .page-link {
-        color: #4a5568;
-        border: 1px solid #e2e8f0;
-        padding: 8px 16px;
-        border-radius: 4px;
-        transition: all 0.3s ease;
-        font-size: 14px;
-    }
 
-    .pagination .page-link:hover {
-        background-color: #f8fafc;
-        border-color: #cbd5e0;
-    }
 
-    .pagination .page-item.active .page-link {
-        background-color: #3b82f6;
-        border-color: #3b82f6;
-        color: white;
-    }
 
-    .pagination .page-item.disabled .page-link {
-        color: #cbd5e0;
-        background-color: white;
-        border-color: #e2e8f0;
-    }
 
-    .pagination .page-link:focus {
-        box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
-    }
-</style>
-@endsection
+
+
